@@ -1,0 +1,73 @@
+cd C:\Program Files\PostgreSQL\10\bin
+psql -U postgres -d postgres
+
+CREATE DATABASE ventas;
+\q
+psql -U postgres -d template1
+
+ CREATE USER yoichi WITH PASSWORD '12345';
+CREATE USER piero WITH CREATEDB PASSWORD 'goldennumber';
+\q
+
+psql -U yoichi -d template1
+\du
+ CREATE DATABASE bdsimple;
+ERROR:  se ha denegado el permiso para crear la base de datos
+\q
+
+psql -U piero -d template1
+
+CREATE DATABASE bdsimple;
+ CREATE DATABASE personal;
+##PARA ver todas las bases de datos
+\l
+#para eliminar la base de datos
+DROP DATABASE (name)
+
+
+psql -U piero -d bdsimple
+\c personal
+DROP DATABASE personal;
+ERROR:  no se puede eliminar la base de datos activa
+
+ \c bdsimple
+ DROP DATABASE personal;
+\l
+\q
+
+psql -U postgres -d template1
+ CREATE USER cynthia WITH PASSWORD 'qbit';
+ \du  #para usuarios
+ #para el cambio de nombre esa base de datos no debe estar activa
+ 
+ CREATE DATABASE personal;
+ ALTER DATABASE personal RENAME TO rrhh;
+
+ \c bdsimple
+ ALTER DATABASE rrhh RENAME TO personal;
+
+/*******************case to ubuntu *************************/ 
+sudo apt update 
+sudo apt install postgresql postgresql-contrib
+
+
+cd /etc
+ls
+cd postgresql
+ls
+cd 13
+ls
+cd main
+gedit postgresql.conf
+
+############otras ubicaciones 
+###################equipo 
+
+################ppt 
+########number 
+#########main
+########postgresql.conf
+
+
+
+****************************************************************/ 
