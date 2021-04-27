@@ -1,0 +1,35 @@
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+postgres=# CREATE DATABASE empresa;
+CREATE DATABASE
+postgres=# \c empresa
+Ahora está conectado a la base de datos «empresa» con el usuario «postgres».
+empresa=# CREATE TABLE empleado(
+empresa(# empid integer NOT NULL,
+empresa(# nombres character varying(40) NOT NULL,
+empresa(# apellidos character varying(40) NOT NULL,
+empresa(# email character varying(80) NOT NULL,
+empresa(# telefono character(7));
+CREATE TABLE
+empresa=# \d empleado
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+empresa=# CREATE TABLE empleado2 AS SELECT * FROM empleado;
+SELECT 0
+empresa=# \d empleado2
+CREATE TABLE empleado3 AS SELECT nombres,apellidos FROM empleado;
+SELECT 0
+empresa=# \d empleado3
+empresa=# \d
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+ CREATE TEMPORARY TABLE tmp_eventual AS SELECT nombres,apellidos FROM empleado;
+  \d tmp_eventual
+  empresa=# \d
+  empresa=# drop table empleado2,empleado3;
+DROP TABLE
+empresa=# \d
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+empresa=# ALTER TABLE empleado ADD COLUMN fcumple date;
+empresa=# ALTER TABLE empleado ALTER COLUMN fcumple SET not null;
+
