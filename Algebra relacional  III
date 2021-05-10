@@ -1,26 +1,37 @@
+
+****************************************Producto Carteciano***************************************
 Consultorio                       Medico
 numC    piso                  cp       numeroC
 100       1                   15        101 
 101       1                   18        102
-102       1                   19         100
+102       1                   19        100
 201       2
 
-Consultorio * Medico
-ConsnumC    piso              cp       MedinumeroC
- 100       1               15           101 
- 100       1               18           102 
- 100       1               19           100     
-
-
+  Consultorio * Medico
+  ConsnumC    piso           cp       MedinumeroC
+   100       1               15           101           F
+   100       1               18           102           F
+   100       1               19           100           V 
+   101       1               15           101           V
+   101       1               18           102           F
+   101       1               19           100           F
+   102       1               15           101           F
+   102       1               18           102           F
+   102       1               19           100           F
+ 
+ 
+ //El medico debe estar trabajando en el mismo Consultorio  F(Descartado)
+ 
 
 ************************************************Join*******************************************
 Sintaxis:
- <Relacion S> ⋈ <criterio> <Relacion R>
+<Relacion S> ⋈ <criterio> <Relacion R>
  Buscar el numero de piso de los consultorios y el nombre de los medicos
 *Consultorio (numeroC, piso, capacidad)
 *Medico (CMP, nombre, edad, ciudad, especialidad, numeroC)
 Solve:
-<Consultorio> ⋈ <numCon=numMed> <medico>
+<Consultorio> ⋈ (numCon=numMed) <medico>
+//El resultado es las filas validas(V)
 //Las filas tiene que guardar relacion
 //Esto genera que salgo todo el cuadro 
 π(NCons,piso,NomMedi)<Consultorio> ⋈ (<numCon=numMed>) <medico>
@@ -28,6 +39,7 @@ Solve:
 //piso ? Cual numC Cual el del medico o consultorio por ende -> Consultorio.numC
   
 ******************************************Naturarl Join****************************************
+Internamente compara las datos de la columna comun y se queda con dichos datos comunes 
 Si tienes una igual predefinida entre dos atributos del mismo nombre presentes 
 en dos relaciones R y S -> Estos atributos solo aparecen una vez .
 Algo asi como un set
