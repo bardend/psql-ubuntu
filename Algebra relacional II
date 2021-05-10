@@ -1,0 +1,23 @@
+***********************************************INTERSECCION ∩ *******************************
+Buscar el nombre e ID   de los trabajadores de Huacho que estan internados como paciente 
+*Medico(ID,nombre,edad,ciudad,especialidad,numC)
+*Paciente(ID,nombre,edad,ciudad,enfermedad)
+*Empleado(ID,nombre,edad,ciudad,salario)
+
+π(nombre ,ID) <Empleado>  ∩   π(nombre ,ID) σ(cuidad="Huacho") <Paciente>
+
+***********************************************UNION U***********************************
+Recuerda que se produce la eliminacion autmatica de duplicados
+Bucar el nombre y el ID de los medicos y de los pacientes registrados en el hospital
+*Medico(ID,nombre,edad,ciudad,especialidad,numC)
+*Paciente(ID,nombre,edad,ciudad,enfermedad)
+
+π(nombre ,ID) <Medicos>  U   π(nombre ,ID) <Paciente>
+
+************************************************Diferencia***************************
+Buscar el numero de los consultorios donde ningun medico da atencion
+Medico(ID,nombre,edad,cuidad,especializacion,numC)
+Consultorio(numC,nombre,piso)
+
+π(numC) <Consultorio> - π(numC) <Medico>
+  
