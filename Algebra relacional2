@@ -1,0 +1,24 @@
+Empleado
+
+codEmpleado     Nombre      Salario     Edad    Cod
+200             Pedro        3000       45      0001
+201             Juan         116574     40      0002
+
+
+**************************************************Seleccion σ **********************
+Devuelve filas
+Ejemplo:
+Buscar los datos de los empleados que tienen un salario menor a 2000.
+y menores de 45  anos.
+σ (salario >2000 AND edad<45) <Empleado>
+
+**************************************************Proyeccion π**************************
+Devuelve columnas
+Ejemplo:
+Buscar el nombre y el salario de los empleados con mas de 40 anos
+  
+π (nombre, salario) σ (edad>40) <Empleado>
+*********************************************EJEMPLOS************************************
+
+2) Busque el codigo de los empleados que trabajan en el proyecto A
+ π (codEmp) σ (codProy="A") <ProyectoEmpleado>          
