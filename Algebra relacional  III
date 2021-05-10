@@ -16,9 +16,11 @@ numC    piso                  cp       numeroC
    101       1               18           102           F
    101       1               19           100           F
    102       1               15           101           F
-   102       1               18           102           F
+   102       1               18           102           V
    102       1               19           100           F
- 
+   201       2               15           101           F 
+   201       2               18           102           F
+   201       2               19           100           F
  
  //El medico debe estar trabajando en el mismo Consultorio  F(Descartado)
  
