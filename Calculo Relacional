@@ -1,0 +1,25 @@
+**********************************************Cuantificadores Existenciales******************************************************
+*******************Cuantificador 
+Pide el nombre y la direccion 
+
+
+Proyecto(codPro,tipo,descr,coDep)
+ProyectoEmpleado(codPro,codEmple,fecha,tiempo)
+Empleado(CodEmple,nombre,direcc,salario,codDep)
+Departamento(codDep,nombre)
+
+
+{t.nombre,t.direccion | Empleado(t) AND (∃d) ((Departamento(d) AND t.codDep=d.codDep AND d.nombre="Invesigacion")}
+
+Encuentre el nobre del proyecto de los empleados del departamento 5:
+{t.descr | Proyecto(t) AND (∃d) (Empleado(d) AND d.codDep=t.codDep AND d.codDep=5)}
+
+*******************Cuantificador Universal*******************************
+Proyecto(codPro,tipo,descr,coDep)
+ProyectoEmpleado(codPro,codEmple,fecha,tiempo)
+Empleado(CodEmple,nombre,direcc,salario,codDep)
+Departamento(codDep,nombre)
+
+Nombre de los empleados que no trabajan en proyectos:
+{t.nombre| Empleado(t) AND NOT(∃p) (ProyectoEmpleado(p) AND t.codEmple=p.codEmple)}
+{t.nombre| Empleado(t) AND (\/p) (NOT ProyectoEmpleado(p) OR t.codEmple!=p.codEmple)}
