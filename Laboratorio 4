@@ -1,0 +1,297 @@
+C:\Users\Ricardo\Desktop>psql -U postgres -d postgres
+postgres=# create database banco;
+postgres-# \l banco
+postgres-# \q
+
+C:\Users\Ricardo\Desktop>psql -U postgres -d banco -f dbbanco.backup
+C:\Users\Ricardo\Desktop>psql -U postgres -d postgres
+postgres=# \c banco
+Ahora está conectado a la base de datos «banco» con el usuario «postgres».
+banco=# \dt   //miras las tablas
+               Listado de relaciones
+ Esquema |        Nombre        | Tipo  |  Due±o
+---------+----------------------+-------+----------
+ public  | cliente              | tabla | postgres
+ public  | cuenta               | tabla | postgres
+ public  | impositor            | tabla | postgres
+ public  | prestamo             | tabla | postgres
+ public  | prestatario          | tabla | postgres
+ public  | responsable-prestamo | tabla | postgres
+ public  | sucursal             | tabla | postgres
+(7 filas)
+
+banco=# \d prestamo;
+                            Tabla ½public.prestamo╗
+     Columna     |         Tipo          | Ordenamiento | Nulable | Por omisi¾n
+-----------------+-----------------------+--------------+---------+-------------
+ numero-prestamo | character(4)          |              |         |
+ nombre-sucursal | character varying(30) |              |         |
+ importe         | numeric(10,2)         |              |         |
+Restricciones de llave forßnea:
+    "cons04" FOREIGN KEY ("nombre-sucursal") REFERENCES sucursal("nombre-sucursal")
+banco=# \q
+
+ ************https://drive.google.com/file/d/1qvJWHr0lO6XcXR_ZSHYV-lBup9kDFX_u/view*************
+ *********************************Laboratorio 4 Parte A**************************************
+1.
+banco=# select * from prestamo where "nombre-sucursal"='SAN ANTONIO';
+ numero-prestamo | nombre-sucursal | importe
+-----------------+-----------------+--------- 
+ P-15            | SAN ANTONIO     | 1500.00
+ P-16            | SAN ANTONIO     | 1300.00
+(2 filas)
+
+
+banco=# select * from prestamo ;
+ numero-prestamo | nombre-sucursal | importe
+-----------------+-----------------+---------
+ P-11            | ANGAMOS         |  900.00
+ P-14            | DERECHA         | 1500.00
+ P-15            | SAN ANTONIO     | 1500.00
+ P-16            | SAN ANTONIO     | 1300.00
+ P-17            | DERECHA         | 1000.00
+ P-23            | 28 DE JULIO     | 2000.00
+ P-93            | HABICH          |  500.00
+ P-94            | HUASCARAN       |
+(8 filas)
+
+ 2.
+ 
+ banco=# select * from prestamo where importe>1200;
+ numero-prestamo | nombre-sucursal | importe
+-----------------+-----------------+---------
+ P-14            | DERECHA         | 1500.00
+ P-15            | SAN ANTONIO     | 1500.00
+ P-16            | SAN ANTONIO     | 1300.00
+ P-23            | 28 DE JULIO     | 2000.00
+(4 filas)
+
+3.
+
+banco=# select * from prestamo where importe>1200 and "nombre-sucursal"='SAN ANTONIO';
+ numero-prestamo | nombre-sucursal | importe
+-----------------+-----------------+---------
+ P-15            | SAN ANTONIO     | 1500.00
+ P-16            | SAN ANTONIO     | 1300.00
+(2 filas)
+
+4.
+ricardo=#  select * from "responsable-prestamo" ;
+ nombre-cliente | nombre-responsable | numero-prestamo
+----------------+--------------------+-----------------
+(0 filas)
+
+
+5.
+
+ricardo=#  select * from "responsable-prestamo" where "nombre-cliente"="nombre-responsable";
+ nombre-cliente | nombre-responsable | numero-prestamo
+----------------+--------------------+-----------------
+(0 filas)
+
+6.
+
+ricardo=#  select * from cliente ;
+ nombre-cliente |   calle-cliente   | ciudad-cliente
+----------------+-------------------+----------------
+ ANGELES        | MAYOR             | HUANCAYO
+ ASTUDILLO      | CHIVAY            | AREQUIPA
+ BARBARAN       | INSURGENTES       | HUANCAYO
+ FERNANDEZ      | EMBAJADORES       | CHICLAYO
+ GOMEZ          | VALLEJO           | TRUJILLO
+ GONZALES       | ARENALES          | ICA
+ LOPEZ          | HUASCARAN         | HUARAZ
+ PEREZ          | VALLEJO           | TRUJILLO
+ RODRIGUEZ      | BAÐOS DEL INCA    | CAJAMARCA
+ RUPAY          | REQUE             | CHICLAYO
+ SANTOS         | VIÐEDOS           | CHINCHA
+ VALDIVIESO     | SANTIAGO DE CHUCO | TRUJILLO
+ GUERRERO       | MARISCAL CASTILLA | HUACHO
+ RIVERA         | HUANDOY           | HUARAZ
+(14 filas)
+
+
+ricardo=#  select * from impositor ;
+ nombre-cliente | numero-cuenta
+----------------+---------------
+ ANGELES        | C-305
+ GOMEZ          | C-215
+ GONZALES       | C-101
+ GONZALES       | C-201
+ LOPEZ          | C-102
+ RUPAY          | C-222
+ SANTOS         | C-217
+ LOPEZ          | C-306
+(8 filas)
+
+
+  ricardo=#  select * from prestamo;
+ numero-prestamo | nombre-sucursal | importe
+-----------------+-----------------+---------
+ P-11            | ANGAMOS         |  900.00
+ P-14            | DERECHA         | 1500.00
+ P-15            | SAN ANTONIO     | 1500.00
+ P-16            | SAN ANTONIO     | 1300.00
+ P-17            | DERECHA         | 1000.00
+ P-23            | 28 DE JULIO     | 2000.00
+ P-93            | HABICH          |  500.00
+ P-94            | HUASCARAN       |
+(8 filas)
+
+ 7.
+ 
+
+ricardo=# select "nombre-sucursal" from prestamo ;
+ nombre-sucursal
+-----------------
+ ANGAMOS
+ DERECHA
+ SAN ANTONIO
+ SAN ANTONIO
+ DERECHA
+ 28 DE JULIO
+ HABICH
+ HUASCARAN
+(8 filas)
+ 
+ 8.
+ ricardo=# select distinct "nombre-sucursal" from prestamo ;
+ 
+ 9.
+ 
+ricardo=# select "numero-prestamo" , importe from prestamo ;
+ numero-prestamo | importe
+-----------------+---------
+ P-11            |  900.00
+ P-14            | 1500.00
+ P-15            | 1500.00
+ P-16            | 1300.00
+ P-17            | 1000.00
+ P-23            | 2000.00
+ P-93            |  500.00
+ P-94            |
+(8 filas)
+
+11.
+ricardo=# select * from cliente where "ciudad-cliente"='CHICLAYO' ;
+ nombre-cliente | calle-cliente | ciudad-cliente
+----------------+---------------+----------------
+ FERNANDEZ      | EMBAJADORES   | CHICLAYO
+ RUPAY          | REQUE         | CHICLAYO
+(2 filas)
+
+
+ricardo=# select "nombre-cliente" * from cliente where "ciudad-cliente"='CHICLAYO' ;
+ERROR:  error de sintaxis en o cerca de «from»
+LÍNEA 1: select "nombre-cliente" * from cliente where "ciudad-cliente...
+                                   ^
+ricardo=# select "nombre-cliente"  from cliente where "ciudad-cliente"='CHICLAYO' ;
+ nombre-cliente
+----------------
+ FERNANDEZ
+ RUPAY
+(2 filas)
+
+12.
+
+ricardo=# select "numero-prestamo"  from prestamo  where "nombre-sucursal"='SAN ANTONIO' and importe>1200 ;
+ numero-prestamo
+-----------------
+ P-15
+ P-16
+(2 filas)
+
+13.
+ricardo=# select "numero-prestamo"  from prestamo  where importe <=1000 and importe>=900 ;
+ numero-prestamo
+-----------------
+ P-11
+ P-17
+(2 filas)
+
+ricardo=# select "numero-prestamo"  from prestamo  where importe between 900 and 1000;
+
+14.
+
+ricardo=# select "nombre-cliente" from impositor UNION
+ricardo-# select "nombre-cliente" from prestatario;
+ nombre-cliente
+----------------
+ PEREZ
+ SOTELO
+ FERNANDEZ
+ SANTOS
+ RUPAY
+ GONZALES
+ GOMEZ
+ ANGELES
+ VALDIVIESO
+ LOPEZ
+(10 filas)
+
+/////////////////////////////////////////////////Duplicados//////////////////////
+ricardo=#  select "nombre-cliente" from impositor UNION ALL
+ricardo-#  select "nombre-cliente" from prestatario;
+ nombre-cliente
+----------------
+ ANGELES
+ GOMEZ
+ GONZALES
+ GONZALES
+ LOPEZ
+ RUPAY
+ SANTOS
+ LOPEZ
+ FERNANDEZ
+ GOMEZ
+ GOMEZ
+ LOPEZ
+ PEREZ
+ SANTOS
+ SOTELO
+ VALDIVIESO
+(16 filas)
+
+16.
+
+
+ricardo=#  select "nombre-cliente" from impositor EXCEPT
+ricardo-#  select "nombre-cliente" from prestatario;
+ nombre-cliente
+----------------
+ ANGELES
+ GONZALES
+ RUPAY
+(3 filas)
+////////////////verificamos//////////////////////////////
+          ^
+ricardo=#  select "nombre-cliente" from impositor where "nombre-cliente"='ANGELES' ;
+ nombre-cliente
+----------------
+ ANGELES
+(1 fila)
+
+
+ricardo=#  select "nombre-cliente" from prestatario where "nombre-cliente"='ANGELES' ;
+ nombre-cliente
+----------------
+(0 filas)
+
+
+17.
+
+ricardo=#  select "nombre-cliente" from impositor INTERSECT
+ricardo-#  select "nombre-cliente" from prestatario;
+ nombre-cliente
+----------------
+ SANTOS
+ GOMEZ
+ LOPEZ
+(3 filas)
+
+
+
+18.
+
+
+
