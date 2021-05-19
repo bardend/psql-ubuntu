@@ -1,0 +1,292 @@
+C:\Users\Ricardo\Desktop>psql -U postgres -d postgres
+Contraseña para usuario postgres:
+psql (10.16)
+ADVERTENCIA: El código de página de la consola (850) difiere del código
+            de página de Windows (1252).
+            Los caracteres de 8 bits pueden funcionar incorrectamente.
+            Vea la página de referencia de psql «Notes for Windows users»
+            para obtener más detalles.
+Digite «help» para obtener ayuda.
+
+postgres=# CREATE DATABASE   dbtest;
+CREATE DATABASE
+postgres=# \c dbtest
+Ahora está conectado a la base de datos «dbtest» con el usuario «postgres».
+dbtest=# CREATE TABLE personas (P_Id        INT,LastName     VARCHAR(25),FirstName  VARCHAR(25),Address  VARCHAR(40),City     VARCHAR(15));
+CREATE TABLE
+
+INSERT INTO personas VALUES (1, 'Hansen', 'Ola', 'Timoteivn 10', 'Sandnes'); 
+INSERT INTO personas VALUES (2, 'Svendson', 'Tove', 'Borgvn 23','Sandnes'); 
+INSERT INTO personas VALUES (3, 'Pettersen', 'Kari', 'Storgt 20', 'Stavanger');
+INSERT INTO personas VALUES (4, ‘Nilsen’, ‘Tom’, ‘Vingvn23', 'Stavanger');
+
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+
+                 ^
+dbtest=# select *from personas;
+ p_id | lastname  | firstname |   address    |   city
+------+-----------+-----------+--------------+-----------
+    1 | Hansen    | Ola       | Timoteivn 10 | Sandnes
+    2 | Svendson  | Tove      | Borgvn 23    | Sandnes
+    3 | Pettersen | Kari      | Storgt 20    | Stavanger
+    4 | Nilsen    | Tom       | Vingvn23     | Stavanger
+(4 filas)
+
+
+dbtest=# SELECT lastname,city FROM personas;
+ lastname  |   city
+-----------+-----------
+ Hansen    | Sandnes
+ Svendson  | Sandnes
+ Pettersen | Stavanger
+ Nilsen    | Stavanger
+(4 filas)
+
+
+dbtest=# SELECT p_id FROM personas WHERE city='Stavanger';
+ p_id
+------
+    3
+    4
+(2 filas)
+
+
+
+
+dbtest=# INSERT INTO personas VALUES(5,'Ulloa','Ricardo','Huancayork');
+INSERT 0 1
+dbtest=#  select *from personas;
+ p_id | lastname  | firstname |   address    |   city
+------+-----------+-----------+--------------+-----------
+    1 | Hansen    | Ola       | Timoteivn 10 | Sandnes
+    2 | Svendson  | Tove      | Borgvn 23    | Sandnes
+    3 | Pettersen | Kari      | Storgt 20    | Stavanger
+    4 | Nilsen    | Tom       | Vingvn23     | Stavanger
+    5 | Ulloa     | Ricardo   | Huancayork   |
+(5 filas)
+
+
+dbtest=# UPDATE personas SET city='Huancayork' WHERE p_id=5;
+UPDATE 1
+dbtest=#  select *from personas;
+ p_id | lastname  | firstname |   address    |    city
+------+-----------+-----------+--------------+------------
+    1 | Hansen    | Ola       | Timoteivn 10 | Sandnes
+    2 | Svendson  | Tove      | Borgvn 23    | Sandnes
+    3 | Pettersen | Kari      | Storgt 20    | Stavanger
+    4 | Nilsen    | Tom       | Vingvn23     | Stavanger
+    5 | Ulloa     | Ricardo   | Huancayork   | Huancayork
+(5 filas)
+
+//////////////////////////////////////////////////////////////////////////SELECT//////////////////////////////////////////////////////////////////////////////
+dbtest=# SELECT * FROM Personas
+dbtest-# ORDER BY lastname;
+ p_id | lastname  | firstname |   address    |    city
+------+-----------+-----------+--------------+------------
+    1 | Hansen    | Ola       | Timoteivn 10 | Sandnes
+    4 | Nilsen    | Tom       | Vingvn23     | Stavanger
+    3 | Pettersen | Kari      | Storgt 20    | Stavanger
+    2 | Svendson  | Tove      | Borgvn 23    | Sandnes
+    5 | Ulloa     | Ricardo   | Huancayork   | Huancayork
+(5 filas)
+
+dbtest=# SELECT * FROM Personas
+dbtest-# ORDER BY lastname DESC;
+ p_id | lastname  | firstname |   address    |    city
+------+-----------+-----------+--------------+------------
+    5 | Ulloa     | Ricardo   | Huancayork   | Huancayork
+    2 | Svendson  | Tove      | Borgvn 23    | Sandnes
+    3 | Pettersen | Kari      | Storgt 20    | Stavanger
+    4 | Nilsen    | Tom       | Vingvn23     | Stavanger
+    1 | Hansen    | Ola       | Timoteivn 10 | Sandnes
+(5 filas)
+
+///////////////////DISTINCT
+
+dbtest=# select city from personas;
+    city
+------------
+ Sandnes
+ Sandnes
+ Stavanger
+ Stavanger
+ Huancayork
+(5 filas)
+
+
+dbtest=# select distinct city from personas;
+    city
+------------
+ Sandnes
+ Stavanger
+ Huancayork
+(3 filas)
+
+
+/////////////////////LIMIT  Solo quieres una muestra////////
+
+
+dbtest=# SELECT * FROM personas LIMIT 2;
+ p_id | lastname | firstname |   address    |  city
+------+----------+-----------+--------------+---------
+    1 | Hansen   | Ola       | Timoteivn 10 | Sandnes
+    2 | Svendson | Tove      | Borgvn 23    | Sandnes
+(2 filas)
+
+///////////////////////
+microemp=# \d microemp
+                                 Tabla ½public.microemp╗
+         Columna          |         Tipo          | Ordenamiento | Nulable  | Por omisi¾n
+--------------------------+-----------------------+--------------+----------+-------------
+ id                       | integer               |              | not null |
+ actividad_economica      | character varying(32) |              | not null |
+ dpto_domicilio           | character varying(12) |              | not null |
+ genero                   | character varying(1)  |              | not null |
+ estado_civil             | character varying(1)  |              | not null |
+ grado_instruccion        | character varying(16) |              | not null |
+ condicion_vivienda       | character varying(11) |              | not null |
+ tipo_trabajador          | character varying(13) |              | not null |
+ tiene_vehivulo           | character varying(5)  |              | not null |
+ numero_dependientes      | integer               |              | not null |
+ antiguedad_domicilio     | integer               |              | not null |
+ edad                     | integer               |              | not null |
+ liquidezdisponible       | numeric(8,2)          |              | not null |
+ deudas_negativas         | integer               |              | not null |
+ t_d_ac_ven_ma30_3m       | integer               |              | not null |
+ rt_n_ent_m0_3m           | integer               |              | not null |
+ antiguedad_laboral       | integer               |              | not null |
+ utilidadoperativa        | numeric(8,3)          |              | not null |
+ ventasnetas              | numeric(8,2)          |              | not null |
+ endeudamientopatrimonial | numeric(4,2)          |              | not null |
+ margenoperativo          | numeric(6,2)          |              | not null |
+ ciclofinanciero          | numeric(8,2)          |              | not null |
+ target                   | integer               |              | not null |
+═ndices:
+    "microemp_pkey" PRIMARY KEY, btree (id)
+
+
+///////////////////////WHERE/////////////
+microemp=# select id,genero,estado_civil from microemp  where estado_civil='S' LIMIT 15;
+ id | genero | estado_civil
+----+--------+--------------
+  1 | F      | S
+  2 | F      | S
+  4 | F      | S
+  6 | M      | S
+  7 | F      | S
+ 10 | M      | S
+ 11 | F      | S
+ 14 | M      | S
+ 15 | M      | S
+ 16 | F      | S
+ 17 | F      | S
+ 18 | F      | S
+ 19 | M      | S
+ 20 | M      | S
+ 21 | F      | S
+(15 filas)
+
+/////////////////////////LIKE///////////////////////
+
+
+microemp=#    select grado_instruccion,tipo_trabajador,dpto_domicilio from microemp where dpto_domicilio LIKE 'L%' limit 15;
+ grado_instruccion | tipo_trabajador | dpto_domicilio
+-------------------+-----------------+----------------
+ MEDIO/SECUNDARIA  | INDEPENDIENTE   | LAMBAYEQUE
+ MEDIO/SECUNDARIA  | INDEPENDIENTE   | LIMA
+ TECNICO           | INDEPENDIENTE   | LA LIBERTAD
+ MEDIO/SECUNDARIA  | INDEPENDIENTE   | LIMA
+ MEDIO/SECUNDARIA  | INDEPENDIENTE   | LIMA
+ MEDIO/SECUNDARIA  | INDEPENDIENTE   | LORETO
+ MEDIO/SECUNDARIA  | INDEPENDIENTE   | LIMA
+ TECNICO           | INDEPENDIENTE   | LIMA
+ MEDIO/SECUNDARIA  | INDEPENDIENTE   | LIMA
+ TECNICO           | INDEPENDIENTE   | LIMA
+ MEDIO/SECUNDARIA  | INDEPENDIENTE   | LAMBAYEQUE
+ MEDIO/SECUNDARIA  | INDEPENDIENTE   | LORETO
+ MEDIO/SECUNDARIA  | INDEPENDIENTE   | LIMA
+ MEDIO/SECUNDARIA  | INDEPENDIENTE   | LIMA
+ MEDIO/SECUNDARIA  | INDEPENDIENTE   | LIMA
+(15 filas)
+
+
+
+
+microemp=# select grado_instruccion,tipo_trabajador,dpto_domicilio from microemp where dpto_domicilio LIKE '%A' limit 15;
+ grado_instruccion | tipo_trabajador | dpto_domicilio
+-------------------+-----------------+----------------
+ MEDIO/SECUNDARIA  | INDEPENDIENTE   | LIMA
+ PRIMARIA          | INDEPENDIENTE   | CAJAMARCA
+ MEDIO/SECUNDARIA  | INDEPENDIENTE   | LIMA
+ TECNICO           | INDEPENDIENTE   | PIURA
+ PRIMARIA          | INDEPENDIENTE   | CAJAMARCA
+ MEDIO/SECUNDARIA  | INDEPENDIENTE   | LIMA
+ PRIMARIA          | INDEPENDIENTE   | CAJAMARCA
+ MEDIO/SECUNDARIA  | INDEPENDIENTE   | LIMA
+ TECNICO           | INDEPENDIENTE   | LIMA
+ MEDIO/SECUNDARIA  | INDEPENDIENTE   | HUANCAVELICA
+ MEDIO/SECUNDARIA  | INDEPENDIENTE   | HUANCAVELICA
+ MEDIO/SECUNDARIA  | INDEPENDIENTE   | TACNA
+ MEDIO/SECUNDARIA  | INDEPENDIENTE   | LIMA
+ TECNICO           | INDEPENDIENTE   | LIMA
+ PRIMARIA          | INDEPENDIENTE   | PIURA
+(15 filas)
+
+/////////////////////////////IN///////////
+
+
+
+dbtest=# SELECT  city from personas WHERE  lastname IN (‘Hansen’, ‘Pettersen’);
+   city
+-----------
+ Sandnes
+ Stavanger
+(2 filas)
+
+///////////////////////////BETWEEN////////////////////
+dbtest=# SELECT * FROM personas
+dbtest-# WHERE lastname BETWEEN ‘Hansen’ AND ‘Pettersen’;
+ p_id | lastname  | firstname |   address    |   city
+------+-----------+-----------+--------------+-----------
+    1 | Hansen    | Ola       | Timoteivn 10 | Sandnes
+    3 | Pettersen | Kari      | Storgt 20    | Stavanger
+    4 | Nilsen    | Tom       | Vingvn23     | Stavanger
+(3 filas)
+
+
+dbtest=# SELECT  city from personas WHERE  lastname >'P';
+    city
+------------
+ Sandnes
+ Stavanger
+ Huancayork
+(3 filas)
+
+/////////////////Renombrar atributos/////////////////////////////////
+
+
+dbtest=# select personas.lastname as apellido FROM personas ;
+ apellido
+-----------
+ Hansen
+ Svendson
+ Pettersen
+ Nilsen
+ Ulloa
+(5 filas)
+
+
+dbtest=# select * from personas;
+ p_id | lastname  | firstname |   address    |    city
+------+-----------+-----------+--------------+------------
+    1 | Hansen    | Ola       | Timoteivn 10 | Sandnes
+    2 | Svendson  | Tove      | Borgvn 23    | Sandnes
+    3 | Pettersen | Kari      | Storgt 20    | Stavanger
+    4 | Nilsen    | Tom       | Vingvn23     | Stavanger
+    5 | Ulloa     | Ricardo   | Huancayork   | Huancayork
+(5 filas)
+
+
