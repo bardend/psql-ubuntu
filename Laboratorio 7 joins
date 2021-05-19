@@ -1,0 +1,577 @@
+
+C:\Users\Ricardo\Desktop>psql -U postgres -d postgres
+postgres=# create database dupont;
+CREATE DATABASE
+postgres=# \l dupont
+
+postgres=# \q
+
+C:\Users\Ricardo\Desktop>psql -U postgres -d dupont -f dupont.backup
+
+
+C:\Users\Ricardo\Desktop>psql -U postgres -d postgres
+Contraseña para usuario postgres:
+psql (10.16)
+ADVERTENCIA: El código de página de la consola (850) difiere del código
+            de página de Windows (1252).
+            Los caracteres de 8 bits pueden funcionar incorrectamente.
+            Vea la página de referencia de psql «Notes for Windows users»
+            para obtener más detalles.
+Digite «help» para obtener ayuda.
+
+postgres=# \c dupont
+Ahora está conectado a la base de datos «dupont» con el usuario «postgres».
+dupont=# \dt
+           Listado de relaciones
+ Esquema |    Nombre     | Tipo  |  Due±o
+---------+---------------+-------+----------
+ public  | cargos        | tabla | postgres
+ public  | departamentos | tabla | postgres
+ public  | empleados     | tabla | postgres
+ public  | job_grades    | tabla | postgres
+ public  | job_history   | tabla | postgres
+ public  | paises        | tabla | postgres
+ public  | regiones      | tabla | postgres
+ public  | ubicaciones   | tabla | postgres
+(8 filas)
+
+
+dupont=# \d paises;
+                            Tabla ½public.paises╗
+   Columna   |         Tipo          | Ordenamiento | Nulable  | Por omisi¾n
+-------------+-----------------------+--------------+----------+-------------
+ pais_id     | character(2)          |              | not null |
+ pais_nombre | character varying(40) |              |          |
+ region_id   | integer               |              |          |
+═ndices:
+
+dupont=# select *from paises;
+ pais_id |       pais_nombre        | region_id
+---------+--------------------------+-----------
+ IT      | Italy                    |         1
+ JP      | Japan                    |         3
+ US      | United States of America |         2
+ CA      | Canada                   |         2
+ CN      | China                    |         3
+ IN      | India                    |         3
+ AU      | Australia                |         3
+ ZW      | Zimbabwe                 |         4
+ SG      | Singapore                |         3
+ UK      | United Kingdom           |         1
+ FR      | France                   |         1
+ DE      | Germany                  |         1
+ ZM      | Zambia                   |         4
+ EG      | Egypt                    |         4
+ BR      | Brazil                   |         2
+ CH      | Switzerland              |         1
+ NL      | Netherlands              |         1
+ MX      | Mexico                   |         2
+ KW      | Kuwait                   |         4
+ IL      | Israel                   |         4
+ DK      | Denmark                  |         1
+ HK      | HongKong                 |         3
+ NG      | Nigeria                  |         4
+ AR      | Argentina                |         2
+ BE      | Belgium                  |         1
+(25 filas)
+
+https://drive.google.com/file/d/1fz1-AyBWMrLIMuFut03mPvlkj-GZ8vKp/view
+*//////////////////////////////////////////////////////////////joins1/////////////////////////////////////////////////////////////
+////////////////NO ANSI//////////////////////
+1.
+
+LÍNEA 1: select *from region;
+                      ^
+dupont=# select *from regiones;
+ region_id |     region_nombre
+-----------+------------------------
+         1 | Europe
+         2 | Americas
+         3 | Asia
+         4 | Middle East and Africa
+(4 filas)
+
+
+dupont=# select *from paises;
+ pais_id |       pais_nombre        | region_id
+---------+--------------------------+-----------
+ IT      | Italy                    |         1
+ JP      | Japan                    |         3
+ US      | United States of America |         2
+ CA      | Canada                   |         2
+ CN      | China                    |         3
+ IN      | India                    |         3
+ AU      | Australia                |         3
+ ZW      | Zimbabwe                 |         4
+ SG      | Singapore                |         3
+ UK      | United Kingdom           |         1
+ FR      | France                   |         1
+ DE      | Germany                  |         1
+ ZM      | Zambia                   |         4
+ EG      | Egypt                    |         4
+ BR      | Brazil                   |         2
+ CH      | Switzerland              |         1
+ NL      | Netherlands              |         1
+ MX      | Mexico                   |         2
+ KW      | Kuwait                   |         4
+ IL      | Israel                   |         4
+ DK      | Denmark                  |         1
+ HK      | HongKong                 |         3
+ NG      | Nigeria                  |         4
+ AR      | Argentina                |         2
+ BE      | Belgium                  |         1
+(25 filas)
+
+
+dupont=# select region_id,region_nombre from regiones,paises where regiones.region_id=paises.region_id;
+ERROR:  la referencia a la columna «region_id» es ambigua
+LÍNEA 1: select region_id,region_nombre from regiones,paises where re...
+                ^
+dupont=# select regiones.region_id,region_nombre,pais_nombre from regiones,paises where regiones.region_id=paises.region_id;
+ region_id |     region_nombre      |       pais_nombre
+-----------+------------------------+--------------------------
+         1 | Europe                 | Belgium
+         1 | Europe                 | Denmark
+         1 | Europe                 | Netherlands
+         1 | Europe                 | Switzerland
+         1 | Europe                 | Germany
+         1 | Europe                 | France
+         1 | Europe                 | United Kingdom
+         1 | Europe                 | Italy
+         2 | Americas               | Argentina
+         2 | Americas               | Mexico
+         2 | Americas               | Brazil
+         2 | Americas               | Canada
+         2 | Americas               | United States of America
+         3 | Asia                   | HongKong
+         3 | Asia                   | Singapore
+         3 | Asia                   | Australia
+         3 | Asia                   | India
+         3 | Asia                   | China
+         3 | Asia                   | Japan
+         4 | Middle East and Africa | Nigeria
+         4 | Middle East and Africa | Israel
+         4 | Middle East and Africa | Kuwait
+         4 | Middle East and Africa | Egypt
+         4 | Middle East and Africa | Zambia
+         4 | Middle East and Africa | Zimbabwe
+(25 filas)
+
+2.
+
+dupont=# SELECT departamento_nombre , ciudad , pais_id , departamentos.ubicacion_id
+dupont-# FROM departamentos ,  ubicaciones
+dupont-# WHERE departamentos.ubicacion_id=ubicaciones.ubicacion_id;
+ departamento_nombre  |       ciudad        | pais_id | ubicacion_id
+----------------------+---------------------+---------+--------------
+ Administration       | Seattle             | US      |         1700
+ Marketing            | Toronto             | CA      |         1800
+ Purchasing           | Seattle             | US      |         1700
+ Human Resources      | London              | UK      |         2400
+ Shipping             | South San Francisco | US      |         1500
+ IT                   | Southlake           | US      |         1400
+ Public Relations     | Munich              | DE      |         2700
+ Sales                | Oxford              | UK      |         2500
+ Executive            | Seattle             | US      |         1700
+ Finance              | Seattle             | US      |         1700
+ Accounting           | Seattle             | US      |         1700
+ Treasury             | Seattle             | US      |         1700
+ Corporate Tax        | Seattle             | US      |         1700
+ Control And Credit   | Seattle             | US      |         1700
+ Shareholder Services | Seattle             | US      |         1700
+ Benefits             | Seattle             | US      |         1700
+ Manufacturing        | Seattle             | US      |         1700
+ Construction         | Seattle             | US      |         1700
+ Contracting          | Seattle             | US      |         1700
+ Operations           | Seattle             | US      |         1700
+ IT Support           | Seattle             | US      |         1700
+ NOC                  | Seattle             | US      |         1700
+ IT Helpdesk          | Seattle             | US      |         1700
+ Government Sales     | Seattle             | US      |         1700
+ Retail Sales         | Seattle             | US      |         1700
+ Recruiting           | Seattle             | US      |         1700
+ Payroll              | Seattle             | US      |         1700
+(27 filas)
+
+
+
+
+
+dupont=# SELECT departamento_nombre , ciudad , pais_id , departamentos.ubicacion_id
+dupont-# FROM departamentos ,  ubicaciones
+dupont-# WHERE departamentos.ubicacion_id=ubicaciones.ubicacion_id and pais_id<>'US';
+
+departamento_nombre | ciudad  | pais_id | ubicacion_id
+---------------------+---------+---------+--------------
+ Marketing           | Toronto | CA      |         1800
+ Human Resources     | London  | UK      |         2400
+ Public Relations    | Munich  | DE      |         2700
+ Sales               | Oxford  | UK      |         2500
+(4 filas)
+
+3.
+
+
+dupont=# SELECT pais_id,pais_nombre
+dupont-# FROM paises,regiones
+dupont-# WHERE paises.region_id=regiones.region_id and region_nombre='Asia';
+ pais_id | pais_nombre
+---------+-------------
+ HK      | HongKong
+ SG      | Singapore
+ AU      | Australia
+ IN      | India
+ CN      | China
+ JP      | Japan
+(6 filas)
+
+///////////////§IHTAXI§ ANSI
+CROSS JOIN
+NATURAL JOIN (Asegurar que hay columnas comunes con el mismo nombre asi evitamos el Where)
+4.
+//El comun es ubicacion_id
+
+
+      ^
+dupont=# SELECT departamento_nombre , ciudad ,  ubicacion_id
+dupont-# FROM departamentos NATURAL JOIN ubicaciones;
+ departamento_nombre  |       ciudad        | ubicacion_id
+----------------------+---------------------+--------------
+ Administration       | Seattle             |         1700
+ Marketing            | Toronto             |         1800
+ Purchasing           | Seattle             |         1700
+ Human Resources      | London              |         2400
+ Shipping             | South San Francisco |         1500
+ IT                   | Southlake           |         1400
+ Public Relations     | Munich              |         2700
+ Sales                | Oxford              |         2500
+ Executive            | Seattle             |         1700
+ Finance              | Seattle             |         1700
+ Accounting           | Seattle             |         1700
+ Treasury             | Seattle             |         1700
+ Corporate Tax        | Seattle             |         1700
+ Control And Credit   | Seattle             |         1700
+ Shareholder Services | Seattle             |         1700
+ Benefits             | Seattle             |         1700
+ Manufacturing        | Seattle             |         1700
+ Construction         | Seattle             |         1700
+ Contracting          | Seattle             |         1700
+ Operations           | Seattle             |         1700
+ IT Support           | Seattle             |         1700
+ NOC                  | Seattle             |         1700
+ IT Helpdesk          | Seattle             |         1700
+ Government Sales     | Seattle             |         1700
+ Retail Sales         | Seattle             |         1700
+ Recruiting           | Seattle             |         1700
+ Payroll              | Seattle             |         1700
+(27 filas)
+
+5.
+dupont=# SELECT * FROM regiones NATURAL JOIN paises
+dupont-# WHERE pais_nombre LIKE 'A%';
+ region_id | region_nombre | pais_id | pais_nombre
+-----------+---------------+---------+-------------
+         2 | Americas      | AR      | Argentina
+         3 | Asia          | AU      | Australia
+(2 filas)
+
+7.
+
+////OJO EL ORDEN EN EL SELECT region_nombre (regiones) , pais_nombre (paises) , ciudad (ubicaciones ) ;
+
+dupont=# SELECT region_nombre , pais_nombre , ciudad
+dupont-# FROM regiones NATURAL JOIN paises NATURAL JOIN ubicaciones ;
+ region_nombre |       pais_nombre        |       ciudad
+---------------+--------------------------+---------------------
+ Europe        | Netherlands              | Utrecht
+ Europe        | Switzerland              | Bern
+ Europe        | Switzerland              | Geneva
+ Europe        | Germany                  | Munich
+ Europe        | United Kingdom           | Stretford
+ Europe        | United Kingdom           | Oxford
+ Europe        | United Kingdom           | London
+ Europe        | Italy                    | Venice
+ Europe        | Italy                    | Roma
+ Americas      | Mexico                   | Mexico City
+ Americas      | Brazil                   | Sao Paulo
+ Americas      | Canada                   | Whitehorse
+ Americas      | Canada                   | Toronto
+ Americas      | United States of America | Seattle
+ Americas      | United States of America | South Brunswick
+ Americas      | United States of America | South San Francisco
+ Americas      | United States of America | Southlake
+ Asia          | Singapore                | Singapore
+ Asia          | Australia                | Sydney
+ Asia          | India                    | Bombay
+ Asia          | China                    | Beijing
+ Asia          | Japan                    | Hiroshima
+ Asia          | Japan                    | Tokyo
+(23 filas)
+
+
+/////////////////////////////////////**  JOIN USING   **///////////////////////////////////
+Cuando queremoes especificar al columna comun entre parentesis .
+
+
+dupont=# SELECT departamento_nombre , ciudad , ubicacion_id
+dupont-# FROM departamentos JOIN ubicaciones USING (ubicacion_id);
+ departamento_nombre  |       ciudad        | ubicacion_id
+----------------------+---------------------+--------------
+ Administration       | Seattle             |         1700
+ Marketing            | Toronto             |         1800
+ Purchasing           | Seattle             |         1700
+ Human Resources      | London              |         2400
+ Shipping             | South San Francisco |         1500
+ IT                   | Southlake           |         1400
+ Public Relations     | Munich              |         2700
+ Sales                | Oxford              |         2500
+ Executive            | Seattle             |         1700
+ Finance              | Seattle             |         1700
+ Accounting           | Seattle             |         1700
+ Treasury             | Seattle             |         1700
+ Corporate Tax        | Seattle             |         1700
+ Control And Credit   | Seattle             |         1700
+ Shareholder Services | Seattle             |         1700
+ Benefits             | Seattle             |         1700
+ Manufacturing        | Seattle             |         1700
+ Construction         | Seattle             |         1700
+ Contracting          | Seattle             |         1700
+ Operations           | Seattle             |         1700
+ IT Support           | Seattle             |         1700
+ NOC                  | Seattle             |         1700
+ IT Helpdesk          | Seattle             |         1700
+ Government Sales     | Seattle             |         1700
+ Retail Sales         | Seattle             |         1700
+ Recruiting           | Seattle             |         1700
+ Payroll              | Seattle             |         1700
+(27 filas)
+
+8.
+
+dupont=# SELECT  departamento_nombre , ciudad , ubicacion_id
+dupont-# FROM departamentos JOIN ubicaciones  USING(ubicacion_id)
+dupont-# WHERE ciudad NOT LIKE 'S%';
+ departamento_nombre | ciudad  | ubicacion_id
+---------------------+---------+--------------
+ Marketing           | Toronto |         1800
+ Human Resources     | London  |         2400
+ Public Relations    | Munich  |         2700
+ Sales               | Oxford  |         2500
+(4 filas)
+
+9.
+
+dupont=# SELECT ciudad , pais_nombre , region_nombre
+dupont-# FROM ubicaciones JOIN paises USING(pais_id)
+dupont-# JOIN regiones USING(region_id)
+dupont-# WHERE pais_id NOT LIKE 'US';
+   ciudad    |  pais_nombre   | region_nombre
+-------------+----------------+---------------
+ Utrecht     | Netherlands    | Europe
+ Bern        | Switzerland    | Europe
+ Geneva      | Switzerland    | Europe
+ Munich      | Germany        | Europe
+ Stretford   | United Kingdom | Europe
+ Oxford      | United Kingdom | Europe
+ London      | United Kingdom | Europe
+ Venice      | Italy          | Europe
+ Roma        | Italy          | Europe
+ Mexico City | Mexico         | Americas
+ Sao Paulo   | Brazil         | Americas
+ Whitehorse  | Canada         | Americas
+ Toronto     | Canada         | Americas
+ Singapore   | Singapore      | Asia
+ Sydney      | Australia      | Asia
+ Bombay      | India          | Asia
+ Beijing     | China          | Asia
+ Hiroshima   | Japan          | Asia
+ Tokyo       | Japan          | Asia
+(19 filas)
+
+
+////////////////////JOIN ..ON
+Las tablas que se combinan tiene una columna comun , pero con nombres diferentes .
+//////////////INNER JOIN(join)
+
+10.
+
+
+      ^
+dupont=# SELECT ciudad , pais_nombre , region_nombre
+dupont-# FROM ubicaciones JOIN paises ON ubicaciones.pais_id=paises.pais_id
+dupont-# JOIN regiones ON paises.region_id = regiones.region_id
+dupont-# WHERE paises.pais_id  LIKE 'US';
+       ciudad        |       pais_nombre        | region_nombre
+---------------------+--------------------------+---------------
+ Seattle             | United States of America | Americas
+ South Brunswick     | United States of America | Americas
+ South San Francisco | United States of America | Americas
+ Southlake           | United States of America | Americas
+(4 filas)
+
+//////////Cross join (para producto cartesiano) 
+11.
+
+
+dupont=# select * from  regiones  CROSS JOIN paises ;
+ region_id |     region_nombre      | pais_id |       pais_nombre        | region_id
+-----------+------------------------+---------+--------------------------+-----------
+         1 | Europe                 | IT      | Italy                    |         1
+         1 | Europe                 | JP      | Japan                    |         3
+         1 | Europe                 | US      | United States of America |         2
+         1 | Europe                 | CA      | Canada                   |         2
+         1 | Europe                 | CN      | China                    |         3
+         1 | Europe                 | IN      | India                    |         3
+         1 | Europe                 | AU      | Australia                |         3
+         1 | Europe                 | ZW      | Zimbabwe                 |         4
+         1 | Europe                 | SG      | Singapore                |         3
+         1 | Europe                 | UK      | United Kingdom           |         1
+         1 | Europe                 | FR      | France                   |         1
+         1 | Europe                 | DE      | Germany                  |         1
+         1 | Europe                 | ZM      | Zambia                   |         4
+         1 | Europe                 | EG      | Egypt                    |         4
+         1 | Europe                 | BR      | Brazil                   |         2
+         1 | Europe                 | CH      | Switzerland              |         1
+         1 | Europe                 | NL      | Netherlands              |         1
+         1 | Europe                 | MX      | Mexico                   |         2
+         1 | Europe                 | KW      | Kuwait                   |         4
+         1 | Europe                 | IL      | Israel                   |         4
+         1 | Europe                 | DK      | Denmark                  |         1
+         1 | Europe                 | HK      | HongKong                 |         3
+         1 | Europe                 | NG      | Nigeria                  |         4
+         1 | Europe                 | AR      | Argentina                |         2
+         1 | Europe                 | BE      | Belgium                  |         1
+         2 | Americas               | IT      | Italy                    |         1
+         2 | Americas               | JP      | Japan                    |         3
+         2 | Americas               | US      | United States of America |         2
+         2 | Americas               | CA      | Canada                   |         2
+         2 | Americas               | CN      | China                    |         3
+         2 | Americas               | IN      | India                    |         3
+         2 | Americas               | AU      | Australia                |         3
+         2 | Americas               | ZW      | Zimbabwe                 |         4
+         2 | Americas               | SG      | Singapore                |         3
+         2 | Americas               | UK      | United Kingdom           |         1
+         2 | Americas               | FR      | France                   |         1
+         2 | Americas               | DE      | Germany                  |         1
+         2 | Americas               | ZM      | Zambia                   |         4
+         2 | Americas               | EG      | Egypt                    |         4
+         2 | Americas               | BR      | Brazil                   |         2
+         2 | Americas               | CH      | Switzerland              |         1
+-- Más  --
+
+
+
+
+13.
+dupont=# select region_nombre , pais_nombre , pais_id   from paises CROSS JOIN regiones
+dupont-# WHERE paises.region_id = regiones.region_id;
+     region_nombre      |       pais_nombre        | pais_id
+------------------------+--------------------------+---------
+ Europe                 | Belgium                  | BE
+ Europe                 | Denmark                  | DK
+ Europe                 | Netherlands              | NL
+ Europe                 | Switzerland              | CH
+ Europe                 | Germany                  | DE
+ Europe                 | France                   | FR
+ Europe                 | United Kingdom           | UK
+ Europe                 | Italy                    | IT
+ Americas               | Argentina                | AR
+ Americas               | Mexico                   | MX
+ Americas               | Brazil                   | BR
+ Americas               | Canada                   | CA
+ Americas               | United States of America | US
+ Asia                   | HongKong                 | HK
+ Asia                   | Singapore                | SG
+ Asia                   | Australia                | AU
+ Asia                   | India                    | IN
+ Asia                   | China                    | CN
+ Asia                   | Japan                    | JP
+ Middle East and Africa | Nigeria                  | NG
+ Middle East and Africa | Israel                   | IL
+ Middle East and Africa | Kuwait                   | KW
+ Middle East and Africa | Egypt                    | EG
+ Middle East and Africa | Zambia                   | ZM
+ Middle East and Africa | Zimbabwe                 | ZW
+(25 filas)
+
+
+////////////////////////////Combinaciones Externas ///////////
+Vamos  a listar todas las filas de una de las tablas , donde hay coincidencia en el orden comun , en caso de no coincidencia NULL
+
+14.
+
+dupont=# SELECT pais_nombre , ciudad                                      
+dupont-# FROM paises LEFT OUTER JOIN ubicaciones                            
+dupont-# ON paises.pais_id = ubicaciones.pais_id ;                              
+       pais_nombre        |       ciudad
+--------------------------+---------------------                     
+ Italy                    | Roma
+ Italy                    | Venice                               
+ Japan                    | Tokyo
+ Japan                    | Hiroshima
+ United States of America | Southlake
+ United States of America | South San Francisco
+ United States of America | South Brunswick
+ United States of America | Seattle
+ Canada                   | Toronto
+ Canada                   | Whitehorse
+ China                    | Beijing
+ India                    | Bombay
+ Australia                | Sydney
+ Singapore                | Singapore
+ United Kingdom           | London
+ United Kingdom           | Oxford
+ United Kingdom           | Stretford
+ Germany                  | Munich
+ Brazil                   | Sao Paulo
+ Switzerland              | Geneva
+ Switzerland              | Bern
+ Netherlands              | Utrecht
+ Mexico                   | Mexico City
+ Zambia                   |
+ Nigeria                  |
+ Egypt                    |
+ Kuwait                   |
+ Zimbabwe                 |
+ HongKong                 |
+ Israel                   |
+ France                   |
+ Argentina                |
+ Belgium                  |
+ Denmark                  |
+(34 filas)
+
+LOOK THE DIFERENCE 
+
+
+dupont=# SELECT pais_nombre , ciudad
+dupont-# FROM paises NATURAL JOIN  ubicaciones;
+       pais_nombre        |       ciudad
+--------------------------+---------------------
+ Italy                    | Roma
+ Italy                    | Venice
+ Japan                    | Tokyo
+ Japan                    | Hiroshima
+ United States of America | Southlake
+ United States of America | South San Francisco
+ United States of America | South Brunswick
+ United States of America | Seattle
+ Canada                   | Toronto
+ Canada                   | Whitehorse
+ China                    | Beijing
+ India                    | Bombay
+ Australia                | Sydney
+ Singapore                | Singapore
+ United Kingdom           | London
+ United Kingdom           | Oxford
+ United Kingdom           | Stretford
+ Germany                  | Munich
+ Brazil                   | Sao Paulo
+ Switzerland              | Geneva
+ Switzerland              | Bern
+ Netherlands              | Utrecht
+ Mexico                   | Mexico City
+(23 filas)
+
+
+
