@@ -1,0 +1,61 @@
+Opera sobre una sola columna , Retorna un solo valor 
+Usando solo en la lista SELECT y en la clausula HAVING 
+//////////////Operador SUM
+empresa=# SELECT SUM(salario)
+empresa-# AS salario_total_Admi
+empresa-# FROM empleado
+empresa-# WHERE posicion = 'Administrador' ;
+ salario_total_admi
+--------------------
+           54000.00
+(1 fila)
+
+////////////AVG () promedio de valores 
+empresa=# SELECT AVG(salario)
+empresa-# AS Salario_promedio_Gest
+empresa-# FROM empleado
+empresa-# WHERE posicion = 'Gestor de Proyecto';
+ salario_promedio_gest
+------------------------
+ 11000.0000000000000000
+(1 fila)
+
+//////////MIN() 
+empresa=# SELECT MIN(salario)
+empresa-# AS Salario_minimo
+empresa-# FROM empleado ;
+ salario_minimo
+----------------
+        9000.00
+(1 fila)
+
+ ////////////////COUNT()
+ 
+empresa=# SELECT COUNT(enum)
+empresa-# AS Nro_Empleados
+empresa-# FROM empleado
+empresa-# WHERE posicion='Administrador';
+ nro_empleados
+---------------
+             2
+(1 fila)
+//////////////////////LOs DOS JUNTOS
+
+empresa=# SELECT COUNT(enum) AS Nro_Admi  , SUM(salario) AS MONTO
+empresa-# FROM empleado
+empresa-# WHERE posicion='Administrador';
+ nro_admi |  monto
+----------+----------
+        2 | 54000.00
+(1 fila)
+
+////Cuantos Gestores de Proyecto tiene salario superior a 90000
+empresa=# SELECT COUNT(*) AS TOT
+empresa-# FROM empleado
+empresa-# WHERE posicion='Gestor de Proyecto' AND  salario >= 9000;
+ tot
+-----
+   3
+   
+   
+   
