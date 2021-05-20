@@ -573,5 +573,135 @@ dupont-# FROM paises NATURAL JOIN  ubicaciones;
  Mexico                   | Mexico City
 (23 filas)
 
+https://drive.google.com/file/d/1I29OeCgWzLVRf9MeoO1f1pqvHoAMveMd/view
+15.
+
+dupont=# SELECT pais_nombre , ciudad
+dupont-# FROM ubicaciones RIGTH OUTER JOIN paises
+dupont-# ON paises.pais_id = ubicaciones.pais_id ;
+ERROR:  error de sintaxis en o cerca de «OUTER»
+LÍNEA 2: FROM ubicaciones RIGTH OUTER JOIN paises
+                                ^
+dupont=# SELECT pais_nombre , ciudad
+dupont-#  FROM ubicaciones RIGHT OUTER JOIN paises
+dupont-# ON ubicaciones.pais_id=paises.pais_id
+dupont-# WHERE pais_nombre LIKE 'A%';
+ pais_nombre | ciudad
+-------------+--------
+ Australia   | Sydney
+ Argentina   |
+(2 filas)
+
+////////////
 
 
+dupont=# SELECT pais_nombre , ciudad
+dupont-#  FROM ubicaciones NATURAL RIGHT OUTER JOIN paises
+dupont-# WHERE pais_nombre LIKE 'A%';
+ pais_nombre | ciudad
+-------------+--------
+ Australia   | Sydney
+ Argentina   |
+(2 filas)
+
+16.
+
+dupont=# SELECT empleado_id , nombres , apellidos , departamento_id
+dupont-# FROM empleados
+dupont-# WHERE departamento_id IS NULL;
+ empleado_id |  nombres  | apellidos | departamento_id
+-------------+-----------+-----------+-----------------
+         178 | Kimberely | Grant     |
+(1 fila)
+
+17.
+                         ^
+dupont=# SELECT DISTINCT departamento_id
+dupont-# FROM departamentos
+dupont-# EXCEPT
+dupont-# SELECT DISTINCT departamento_id
+dupont-# FROM empleados ;
+ departamento_id
+-----------------
+             190
+             170
+             180
+             200
+             240
+             120
+             210
+             160
+             220
+             230
+             260
+             150
+             140
+             250
+             130
+             270
+(16 filas)
+
+////////////////////FULL OUTHR JOll.¡ 
+
+LEFT + RIGHT
+18.
+                ^
+dupont=# SELECT departamentos.departamento_id , departamento_nombre , empleado_id , nombres
+dupont-# FROM departamentos FULL OUTER JOIN empleados
+dupont-# ON departamentos.departamento_id = empleados.departamento_id ;
+
+              80 | Sales                |         177 | Jack
+                 |                      |         178 | Kimberely
+              80 | Sales                |         179 | Charles
+              50 | Shipping             |         180 | Winston
+              50 | Shipping             |         181 | Jean
+              50 | Shipping             |         182 | Martha
+              50 | Shipping             |         183 | Girard
+              50 | Shipping             |         184 | Nandita
+              50 | Shipping             |         185 | Alexis
+              50 | Shipping             |         186 | Julia
+              50 | Shipping             |         187 | Anthony
+              50 | Shipping             |         188 | Kelly
+              50 | Shipping             |         189 | Jennifer
+              50 | Shipping             |         190 | Timothy
+              50 | Shipping             |         191 | Randall
+              50 | Shipping             |         192 | Sarah
+              50 | Shipping             |         193 | Britney
+              50 | Shipping             |         194 | Samuel
+              50 | Shipping             |         195 | Vance
+              50 | Shipping             |         196 | Alana
+              50 | Shipping             |         197 | Kevin
+              50 | Shipping             |         198 | Donald
+              50 | Shipping             |         199 | Douglas
+              10 | Administration       |         200 | Jennifer
+              20 | Marketing            |         201 | Michael
+              20 | Marketing            |         202 | Pat
+              40 | Human Resources      |         203 | Susan
+              70 | Public Relations     |         204 | Hermann
+             110 | Accounting           |         205 | Shelley
+             110 | Accounting           |         206 | William
+             120 | Treasury             |             |
+             270 | Payroll              |             |
+             230 | IT Helpdesk          |             |
+
+19.
+   AUTOUNION se une una tabla con sigo misma  
+dupont=# SELECT Trab.nombres AS nomEmpleado , Trab.apellidos AS apellEmpleado , Jefes.nombres AS nomJefe , Jefes.apellidos AS apelliJefe
+dupont-# FROM empleados AS Trab JOIN empleados AS Jefes
+dupont-# ON Trab.gerente_id = Jefes.empleado_id ;
+ nomempleado | apellempleado |  nomjefe  | apellijefe
+-------------+---------------+-----------+------------
+ Neena       | Kochhar       | Steven    | King
+ Lex         | De Haan       | Steven    | King
+ Alexander   | Hunold        | Lex       | De Haan
+ Bruce       | Ernst         | Alexander | Hunold
+ David       | Austin        | Alexander | Hunold
+ Valli       | Pataballa     | Alexander | Hunold
+ Diana       | Lorentz       | Alexander | Hunold
+ Nancy       | Greenberg     | Neena     | Kochhar
+ Daniel      | Faviet        | Nancy     | Greenberg
+ John        | Chen          | Nancy     | Greenberg
+ Ismael      | Sciarra       | Nancy     | Greenberg
+ Jose Manuel | Urman         | Nancy     | Greenberg
+ Luis        | Popp          | Nancy     | Greenberg
+ Den         | Raphaely      | Steven    | King
