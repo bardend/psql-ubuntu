@@ -57,5 +57,65 @@ empresa-# WHERE posicion='Gestor de Proyecto' AND  salario >= 9000;
 -----
    3
    
-   
+clinica=# CREATE TABLE consultorio(numeroc int , piso int , capacidad int);
+CREATE TABLE
+clinica=# \dt
+          Listado de relaciones
+ Esquema |   Nombre    | Tipo  |  Due±o
+---------+-------------+-------+----------
+ public  | consultorio | tabla | postgres
+(1 fila)
+clinica=# INSERT INTO consultorio VALUES (1, 1, 30);
+INSERT 0 1
+
+clinica=# CREATE TABLE medico(CMP int , nombre varchar(20) , edad int , ciudad varchar(30) , especialidad varchar(40) , numeroc int );
+CREATE TABLE
+clinica=# \dt
+          Listado de relaciones
+ Esquema |   Nombre    | Tipo  |  Due±o
+---------+-------------+-------+----------
+ public  | consultorio | tabla | postgres
+ public  | medico      | tabla | postgres
+(2 filas)
+
+
+////////////////////////////////////////////UPDATE
+clinica=# SELECT *
+clinica-# FROM consultorio ;
+ numeroc | piso | capacidad
+---------+------+-----------
+       1 |    1 |        30
+(1 fila)
+
+
+clinica=# UPDATE consultorio
+clinica-# SET capacidad = capacidad + 5 , piso = 2
+clinica-# WHERE numeroc=1 ;
+UPDATE 1
+clinica=# SELECT *
+clinica-# FROM consultorio ;
+ numeroc | piso | capacidad
+---------+------+-----------
+       1 |    2 |        35
+(1 fila)
+
+////////////////////////////////////////////DELETE
+7.
+
+clinica=# SELECT *
+clinica-# FROM medico ;
+ cmp | nombre  | edad |  ciudad  | especialidad | numeroc
+-----+---------+------+----------+--------------+---------
+ 123 | Ricardo |   20 | Huancayo | Traumatologo |       2
+(1 fila)
+
+
+clinica=# DELETE FROM medico
+clinica-# WHERE ciudad='Huancayo';
+DELETE 1
+clinica=# SELECT *
+clinica-# FROM medico ;
+ cmp | nombre | edad | ciudad | especialidad | numeroc
+-----+--------+------+--------+--------------+---------
+(0 filas)
    
