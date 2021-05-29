@@ -1,0 +1,159 @@
+#include <bits/stdc++.h>
+#define N 45
+#define pb push_back
+using namespace std;
+char obtener_letra() {
+    char c = 'A';
+    return c+(rand()%26);
+}
+
+		//INSERT INTO vuelo VALUES('1546SG','EDI','HKG','20210528 05:03:12','20210528 05:03:12');
+int main() {
+	
+	vector<string>s;
+	s.pb("HAM");
+	s.pb("LTN");s.pb("MCO");s.pb("QSA");s.pb("HKG");
+	s.pb("ORY");s.pb("GDL");s.pb("EDI");s.pb("HKG");s.pb("JFK");
+	s.pb("AOL");s.pb("GRU");s.pb("LIM");s.pb("YOW");
+	s.pb("YHU");s.pb("YUL");s.pb("YWG");
+	
+	int n=s.size();
+	for(int i=0;i<N;i++){
+		int num = 40 + rand() % 3000;
+		
+		char l1=obtener_letra();
+		char l2=obtener_letra();
+		
+		int id1=rand()%n;
+		int id2=id1;
+		while(id2==id1){
+		    id2=rand()%n;
+		}
+		if(num<100){
+		  	printf("INSERT INTO vuelo VALUES('00%d",num);
+		}
+		else if(num<1000){	
+		  	printf("INSERT INTO vuelo VALUES('0%d",num); 
+		}
+		else {
+		  	printf("INSERT INTO vuelo VALUES('%d",num);
+		}
+		printf("%c%c',",l1,l2);
+	
+		cout<<"'"<<s[id1]<<"',";
+		cout<<"'"<<s[id2]<<"',";
+		
+	
+		int a= 2010 + rand()%12;
+		int m= 1 + rand()%12; 
+		int d= 1 + rand()%28;
+		
+		if(m<10){
+			if(d<10)
+				printf("'%d0%d0%d ",a,m,d);
+			else
+				printf("'%d0%d%d ",a,m,d); 
+		}
+		
+		else{
+			if(d<10)
+			    printf("'%d%d0%d ",a,m,d);
+			else 	
+				printf("'%d%d%d ",a,m,d);
+		}
+		
+		int hora=rand()%20;
+		int minuto=rand()%60;
+		int segundo=rand()%60;
+		
+		if(hora<10){
+		    if(minuto<10){
+		        if(segundo<10)
+		            printf("0%d:0%d:0%d',",hora,minuto,segundo);
+		        else 
+		            printf("0%d:0%d:%d',",hora,minuto,segundo);
+		    }
+		    else {
+		        if(segundo<10)
+		            printf("0%d:%d:0%d',",hora,minuto,segundo);
+		        else 
+		            printf("0%d:%d:%d',",hora,minuto,segundo);
+		    }
+		}
+		else{
+		    if(minuto<10){
+		        if(segundo<10)
+		          printf("%d:0%d:0%d',",hora,minuto,segundo);
+		        else 
+                  printf("%d:0%d:%d',",hora,minuto,segundo);		        
+		    }
+		    else {
+		        
+		        if(segundo<10)
+		              printf("%d:%d:0%d',",hora,minuto,segundo);
+		        else 
+		              printf("%d:%d:%d',",hora,minuto,segundo);
+		    }
+		}
+		
+	//////////////////////////////////////////////////////////////////////////////////////	
+
+		int v1=(rand()%3+3);
+		int v2=(rand()%60);
+		int v3=(rand()%60);
+
+		int hora2=(hora+v1)%24;
+		int minuto2=(minuto+v2)%60;
+		int segundo2=(segundo+v3)%60;
+		
+			
+		if(m<10){
+			if(d<10)
+				printf("'%d0%d0%d ",a,m,d);
+			else
+				printf("'%d0%d%d ",a,m,d); 
+		}
+		
+		else{
+			if(d<10)
+			    printf("'%d%d0%d ",a,m,d);
+			else 	
+				printf("'%d%d%d ",a,m,d);
+		}
+		
+		
+		if(hora2<10){
+		    if(minuto2<10){
+		        if(segundo2<10)
+		            printf("0%d:0%d:0%d');",hora2,minuto2,segundo2);
+		        else 
+		            printf("0%d:0%d:%d');",hora2,minuto2,segundo2);
+		    }
+		    else {
+		        if(segundo2<10)
+		            printf("0%d:%d:0%d');",hora2,minuto2,segundo2);
+		        else 
+		            printf("0%d:%d:%d');",hora2,minuto2,segundo2);
+		    }
+		}
+		//INSERT INTO vuelo VALUES('1546SG','EDI','HKG','20210528 05:03:12','20210528 05:03:12');
+		else{
+		    if(minuto2<10){
+		        if(segundo2<10)
+		          printf("%d:0%d:0%d');",hora2,minuto2,segundo2);
+		        else 
+                  printf("%d:0%d:%d');",hora2,minuto2,segundo2);		        
+		    }
+		    else {
+		        
+		        if(segundo2<10)
+		              printf("%d:%d:0%d');",hora2,minuto2,segundo2);
+		        else 
+		              printf("%d:%d:%d');",hora2,minuto2,segundo2);
+		    }
+		}
+	cout<<endl;	
+	}
+
+	return 0;
+}
